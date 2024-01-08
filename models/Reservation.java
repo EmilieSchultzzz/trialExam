@@ -11,16 +11,14 @@ public class Reservation implements TimeSlot, Comparable<Reservation>{
    
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Group group;
     private double totalReservationTime;
-    private String groupID;
-    private String roomID;
     private List<Reservation> allReservations = new ArrayList<Reservation>();
 
-    public Reservation(LocalDateTime startDate, LocalDateTime endDate, String groupID, String roomID) {
+    public Reservation(LocalDateTime startDate, LocalDateTime endDate, Group group) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.groupID = groupID;
-        this.roomID = roomID;
+        this.group = group;
     }
 
 
@@ -63,7 +61,7 @@ public class Reservation implements TimeSlot, Comparable<Reservation>{
     }
 
     public boolean isAvailable() {
-        return true;
+        return false;
     }
 
     public double getTotalReservationTime() {
@@ -75,30 +73,12 @@ public class Reservation implements TimeSlot, Comparable<Reservation>{
         return "Start time:" + this.startDate + "End time:" + this.endDate;
     }
 
-    public void approve(Group group) {
-        group.timeReserved = group.timeReserved + this.getTotalReservationTime();
+    public void approve() {
+        group.addTime(startDate.until(endDate, java.time.temporal.ChronoUnit.MINUTES));
     }
 
     public int compareTo(Reservation other) {
-        List<Group> allGroups = new ArrayList<Group>();
-        for (Group group : allGroups) {
-            if (this.groupID == group.getID()) {
-                for (Group group2 : allGroups) {
-                    if (other.groupID == group2.getID()) {
-                        if (group.compareTo(group2) == 1) {
-                            return 1;
-                        }
-                        else if (group.compareTo(group2) == -1) {
-                            return -1;
-                        }
-                        else if (group.compareTo(group2) == 0) {
-                            return 0;
-                        }
-                    }
-                }
-            }
-        }
-        return 0;
+        return group.compareTo(other.group);
     }
 
 }

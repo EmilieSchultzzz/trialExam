@@ -7,6 +7,11 @@ public class FreeSlot implements TimeSlot{
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     
+    public FreeSlot(LocalDateTime start, LocalDateTime end) {
+        this.startDate = start;
+        this.endDate = end;
+    }
+
     public boolean overlaps(TimeSlot other) {
         if (startDate.isBefore(other.getStartDate())
             && endDate.isAfter(other.getStartDate())
@@ -47,5 +52,9 @@ public class FreeSlot implements TimeSlot{
     
     public boolean isAvailable() {
         return true;
+    }
+
+    public String toString() {
+        return startDate + " until " + endDate + " Available";
     }
 }

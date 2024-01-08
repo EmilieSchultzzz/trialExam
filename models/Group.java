@@ -1,12 +1,29 @@
 package models;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Group implements Comparable<Group>{
+import java.util.Set;
+
+import interfaces.Identifiable;
+
+public class Group implements Comparable<Group>, Identifiable<String>{
     private String ID;
     public double timeReserved;
     private int numberOfMembers;
-    private List<String> memberIDs = new ArrayList<String>(numberOfMembers);
+    private Set<String> memberIDs;
+
+    public Group(String ID, Set<String> memberIDs) {
+        this.ID = ID;
+        this.memberIDs = memberIDs;
+        this.numberOfMembers = memberIDs.size();
+        this.timeReserved = 0;
+    }
+
+    public String getIdentifier() {
+        return ID;
+    }
+
+    public String toString() {
+        return "Group " + ID;
+    }
 
     public int compareTo(Group other) {
         if ((this.timeReserved < other.timeReserved)
@@ -24,12 +41,8 @@ public class Group implements Comparable<Group>{
         }
     }
 
-    public String getID() {
-        return this.ID;
-    }
-
     public void addTime(double d) {
-        this.timeReserved = this.timeReserved + d;
+        this.timeReserved += d;
     }
 
     public void clearTime() {
